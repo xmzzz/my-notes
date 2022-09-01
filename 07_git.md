@@ -1,12 +1,13 @@
+# git config 
+```
 git config --global user.name "YourName"
 git config --global user.name
 git config --global user.email "xxx@xxx.com"
 git config --global user.email
-git diff > xxx.patch
 git config --global core.editor vim
-git format-patch -1 2691e0267 -o ~/path/
-
-# github pull request
+```
+# pull request
+```
 git remote add upstream https://github.com/iovisor/bcc.git
 git remote -v
 	git remote remove upstream
@@ -20,41 +21,51 @@ git rebase master
 git log
 git commit --amend
 git log
-
-
+```
 # git patch
+```
+git diff > xxx.patch
 git format-patch -1 2691e0267 -o ~/path/
-
-# git log 
+git format-patch -1 2691e0267 -o ~/path/
+```
+# git log
+```
 git log -p -1 185143bd
 git log --oneline
-
+```
 # After PR merged, delete dev branch, syn local repo
+```
 git branch -a
 git remote show origin
 git remote prune origin
 git branch -a
 git branch -D dev-fix-issue
-
+```
 # push origin 
+```
 git push origin A:A
 git push origin A  // when the branch names are the same
-
+```
 # log && show diff
+```
 git log -p -2
-
+```
 # show one file's change
+```
 git log -p filepath
-
+```
 # show changed file list
+```
 git log --stat
-
+```
 # show changed file list at one commitId
+```
 git log --stat commitId  ||  git show --stat commitId
-
+```
 # show one file's relative commit
+```
 git log -- foo.py bar.py
-
+```
 # downloads new data from a remote repository
 What's the difference between git fetch and git pull?
 
