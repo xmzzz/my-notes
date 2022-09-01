@@ -1,7 +1,9 @@
 # register reference
+```
 $ cat /usr/src/linux-headers-5.15.0-41/arch/riscv/include/uapi/asm/ptrace.h
-
+```
 # Autoconf macro
+```
 AC_CANONICAL_HOST
 AS_CASE([$host_cpu],
   [i?86], [ARCHDIR=arch/i386],
@@ -9,12 +11,13 @@ AS_CASE([$host_cpu],
   [AC_MSG_ERROR("No assembler code for CPU $host_cpu")]
 )
 AC_SUBST([ARCHDIR])
-
+```
 (Note that i?86 is used to match i586, i686 etc.) With this, you can use @ARCHDIR@ in your Makefile.am
 
 	from: https://stackoverflow.com/questions/16713205/how-to-build-arch-machine-dependent-code-with-autotools
 
 # ply: error while loading shared libraries: libply.so.0
+```
 $ sudo ply 'kprobe:do_sys_open { printf("%v(%v): %s\n", comm, uid, str(arg1)); }'
 ply: error while loading shared libraries: libply.so.0: cannot open shared object file: No such file or directory
 $ sudo find / -name libply.so.0
@@ -40,8 +43,10 @@ ply: error while loading shared libraries: libply.so.0: cannot open shared objec
 ~/work/ply$ sudo ldconfig
 ~/work/ply$ sudo ply 'kprobe:do_sys_open { printf("%v(%v): %s\n", comm, uid, str(arg1)); }'
 info: creating kallsyms cache
+```
 
 # 关于模块的打印信息
+```
 sudo dmesg -c     // 清理内容，在插入模块，方便查看
 sudo dmesg
-
+```
