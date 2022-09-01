@@ -39,7 +39,7 @@ CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"
 Change it to this:
 ```
 CONFIG_SYSTEM_TRUSTED_KEYS=""
-
+```
 Another key has been added to the default Canonical kernel configuration since this answer was posted:
 ```
 CONFIG_SYSTEM_REVOCATION_KEYS="debian/canonical-revoked-certs.pem"
