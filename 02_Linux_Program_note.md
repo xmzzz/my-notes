@@ -100,3 +100,56 @@ It handles integer overflows efficiently and return ULONG_LONG_MAX on overflow. 
 for integer underflows its behaviour is undefined.
 */
 ```
+
+# char *strchr(const char *s, int c);
+The strchr() function returns a pointer to the first occurrence of the character c in the string s.
+
+# man 3 realpath
+realpath - return the canonicalized absolute pathname
+realpath()  expands  all symbolic links and resolves references to /./, /../ and extra '/' characters in the null-terminated string named by path to produce a canonicalized absolute pathname.  The resulting pathname is stored as a null-terminated string, up to a maximum of PATH_MAX bytes, in the buffer pointed to by resolved_path.  The resulting path will have no symbolic link, /./ or /../ components.
+
+# char *strdup(const char *s);
+The strdup() function returns a pointer to a new string which is a duplicate of the string s. Memory for the new string is obtained with malloc(3), and can be freed with free(3).
+
+# strpbrk - search a string for any of a set of bytes
+char *strpbrk(const char *s, const char *accept);
+The strpbrk() function locates the first occurrence in the string s of any of the bytes in the string accept.
+
+# /proc/self/exe
+linux系统中有个符号链接：/proc/self/exe 它代表当前程序，我们可以用readlink读取它的源路径就可以获取当前程序的绝对路径。
+```
+readlink("/proc/self/exe", buf, MAXBUFSIZE);
+```
+
+# cat /proc/kallsyms
+kernel functions List
+
+# fg command
+Have you ever wondered how you can send a job or process running in the background to the foreground on the Linux shell? The fg command, short for the foreground, is a command that moves a background process on your current Linux shell to the foreground. This contrasts the bg command, short for background, that sends a process running in the foreground to the background in the current shell.
+
+	-- https://linuxhint.com/fg-command-linux/
+
+# popen, pclose - pipe stream to or from a process
+FILE *popen(const char *command, const char *type);
+int pclose(FILE *stream);
+The popen() function opens a process by creating a pipe, forking, and invoking the shell. 
+Since a pipe is by definition unidirectional, the type argument may specify only reading or writing, not both;
+the resulting stream is correspondingly read-only or write-only.
+
+# taskset - set or retrieve a process's CPU affinity
+taskset [options] mask command [argument...]
+taskset [options] -p [mask] pid
+       The taskset command is used to set or retrieve the CPU affinity
+       of a running process given its pid, or to launch a new command
+       with a given CPU affinity. CPU affinity is a scheduler property
+       that "bonds" a process to a given set of CPUs on the system. The
+       Linux scheduler will honor the given CPU affinity and the process
+       will not run on any other CPUs. Note that the Linux scheduler
+       also supports natural CPU affinity: the scheduler attempts to
+       keep processes on the same CPU as long as practical for
+       performance reasons. Therefore, forcing a specific CPU affinity
+       is useful only in certain applications.
+
+# proc - process information pseudo-filesystem
+DESCRIPTION
+       The proc filesystem is a pseudo-filesystem which provides an interface to kernel data structures.  It is commonly mounted at /proc. 

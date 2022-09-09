@@ -37,3 +37,14 @@ ls -ld work/
 
 sudo chmod 765 work/
 ```
+
+# deb install
+sudo dpkg -i package_file.deb
+sudo apt-get remove package_name
+
+# Convert .rpm files to .deb files
+- Install the alien program 
+- sudo alien package_file.rpm
+
+# ubuntu 查找已安装的包
+dpkg -l | grep -i "name"
