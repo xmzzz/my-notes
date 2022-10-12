@@ -43,7 +43,7 @@ sudo apt install libncurses-dev flex bison openssl libssl-dev \
 sudo apt autoremove
 ```
 
-# 第一部分 编译 Linux 内核
+# 第一部分 更换 QEMU 中 x86 Ubuntu 默认内核并用 GDB 远程调试
 
 ## 下载 Linux 内核源码
 根据不同需求，可以选择下载完整的 Linux 内核源码，也可以只下载指定版本号的 Linux 内核源码。
@@ -128,23 +128,23 @@ $ cp /boot/config-5.15.0-48-generic .config
 $ make menuconfig
 ```
 
-将会打开图形界面，方便进行选项配置。参考其他教程，进行 x86 Ubuntu 内核调试需要关闭 KPTI、 KASLR，并打开 DEBUG_INFO 选项。具体位置如下，注意内核选项的勾选状态用 < > <*>表示：
+将会打开图形界面，方便进行选项配置。参考其他教程，进行 x86 Ubuntu 内核调试需要关闭 KPTI、 KASLR 选项，并打开 DEBUG_INFO 选项。具体位置如下，注意内核选项的勾选状态用 < > <*>表示：
 
 > Processor type and features → Randomize the address of the kernel image (KASLR) < >  
-> Security options → Remove the kernel mapping in user mode < >
-> Kernel hacking → Compile-time checks and compiler options → Compile the kernel with debug info <*>
-> Kernel hacking → Compile-time checks and compiler options → Provide GDB scripts for kernel debugging <*>
+> Security options → Remove the kernel mapping in user mode < >  
+> Kernel hacking → Compile-time checks and compiler options → Compile the kernel with debug info <*>  
+> Kernel hacking → Compile-time checks and compiler options → Provide GDB scripts for kernel debugging <*>  
 
-另外，如果需要用 QEMU 调试，还需要调整以下选项：
+另外，因为需要用 QEMU 调试，还需要调整以下选项：
 
 > Device drivers → Network device support → Virtio network driver <*>  
 > Device drivers → Block devices → Virtio block driver <*>  
 > Binary Emulations → x32 ABI for 64-bit mode, turn this OFF < >  
 > Enable loadable modules support → Module unloading - Forced module unloading <*>  
 
-以上选项的具体影响还未测试，我参考网上的大量文章，将疑似有关的选项都关掉了，因此目前搭建成功的调试环境不确定与这些内核选项的关系度。（TODO：留待以后验证）
+以上选项的具体影响还未测试，我把内核编译了无数遍，将疑似有关的选项都关掉了，因此目前搭建成功的调试环境不确定与这些内核选项的关系度。（TODO：留待以后验证）
 
-内核选项编辑好之后，退出保存。将在内核源码根目录下生成 `.config` 文件。
+内核选项编辑好之后，退出并保存。将在内核源码根目录下生成 `.config` 文件。
 
 最后在 `.config` 文件中找到：  
 `CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"`  
@@ -156,7 +156,7 @@ $ make menuconfig
 
 2. 编译 Linux 内核
 
-这一步我们将把内核编译并打包为 `.deb` 文件，拷贝到虚拟机安装。本文后面也会介绍编译到本地，并用编译好的内核启动 QEMU Ubuntu 操作系统的方法。
+这一步我们将把内核编译并打包为 `.deb` 文件，之后拷贝到虚拟机里进行安装。本文后面也会介绍编译到宿主机本地，并用编译好的内核启动 QEMU Ubuntu 操作系统的方法。
 
 在内核根目录下运行以下命令开始内核编译：
 
@@ -165,7 +165,7 @@ $ make bindeb-pkg -j4
 ```
 编译过程将持续一段时间，成功编译后将会在内核源码上一层目录生成多个 `.deb` 文件，运行 `cd .. ; ls` 就可以看到。
 
-3. 使用 QEMU 启动 Ubuntu 22.04
+## 使用 QEMU 启动 Ubuntu 22.04
 
 QEMU 可以通过源码安装，也可以 `apt` 安装，过程可参考相关文档，暂不详述。
 
@@ -175,7 +175,7 @@ QEMU 可以通过源码安装，也可以 `apt` 安装，过程可参考相关�
 ```
 $ qemu-img create -f qcow2 test.qcow2 30G
 ```
-此处的 30G 容量是自定义的，我安装 Ubuntu 之后占用了大概 20G ，剩余 10G 左右的空闲空间。我没有设置太大，是因为我发现随着 `test.qcow2` 虚拟磁盘的使用，它在宿主机上所占据的空间会变的虚高，而删除虚拟机里的文件并不会使 `test.qcow2`虚拟磁盘所占空间变小。我还没有找到压缩虚拟磁盘大小的便捷方法，所以先不设置那么大，等不够用了可以用如下命令增加空间：
+此处的 30G 容量是自定义的，我安装 Ubuntu 之后占用了大概 20G ，剩余 10G 左右的空闲空间。我没有设置太大，是因为随着 `test.qcow2` 虚拟磁盘的使用，它在宿主机上所占据的空间会变的虚高，而删除虚拟机里的文件并不会使 `test.qcow2`虚拟磁盘所占空间变小。我还没有找到压缩虚拟磁盘大小的便捷方法，所以先不设置那么大，等不够用了可以用如下命令增加空间：
 
 ```
 $ qemu-img resize -f raw test.qcow2 +5G
@@ -224,7 +224,7 @@ $ sudo vim /etc/default/grub
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nokaslr"
 ```
 
-（ 此参数不添加应该也不影响，因为我们在编译内核时已经取消了该选项，我是为保险起见就加上了。 ）
+（ 此参数不添加应该也不影响，因为我们在编译内核时已经取消了该选项，为了保险起见我加上了。 ）
 
 更新 grub ，并关闭虚拟机
 
@@ -245,7 +245,7 @@ $ objcopy --only-keep-debug vmlinux kernel.sym
 $ qemu-system-x86_64 -s -S \
     -m 2048 \
     -chardev stdio,id=gdb0 \
-    -drive if=virtio,file=nfstest.qcow2,cache=none \
+    -drive if=virtio,file=test.qcow2,cache=none \
     -device isa-debugcon,iobase=0x402,chardev=gdb0,id=d1 \
     -vga virtio \
     -enable-kvm \
@@ -253,7 +253,9 @@ $ qemu-system-x86_64 -s -S \
 
 其中 `-s` 用来指定 `localhost:1234` 端口进行 GDB 远程调试， `-S` 会让 QEMU 启动时暂停运行并等待 GDB 连接。
 
-- 运行 GDB ，加载符号文件，并远程连接到 QEMU
+## 用 GDB 调试 Ubuntu 内核
+
+- 在 Linux 内核源码根目录下运行 GDB ，加载符号文件，并远程连接到 QEMU
 
 ```
 $ gdb
@@ -263,3 +265,10 @@ $ gdb
 (gdb) c
 ```
 
+此时，虚拟机中的 Ubuntu 22.04 操作系统将会被启动，并先在 `start_kernel` 断点处停下，尝试 GDB 中的 `s`、`l`、`p`、`n`命令，都可以有正确结果。
+
+现在便可以使用 `b __do_sys_perf_event_open` 命令在系统调用上打断点，运行 ply 工具的示例并调试。 Enjoy it!
+
+# 第二部分 用 GDB 远程调试 QEMU 中的 RISCV64 Ubuntu 22.04 内核
+
+（TODO）
