@@ -48,3 +48,8 @@ sudo apt-get remove package_name
 
 # ubuntu 查找已安装的包
 dpkg -l | grep -i "name"
+
+# extract tar.xz files
+apt install xz-utils
+tar -xf xxx.tar.xz
+

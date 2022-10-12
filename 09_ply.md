@@ -50,3 +50,9 @@ info: creating kallsyms cache
 sudo dmesg -c     // 清理内容，在插入模块，方便查看
 sudo dmesg
 ```
+
+# autoreconf: not found
+sudo apt-get install make autoconf automake libtool
+
+# lexer.h: No such file or directory
+sudo apt-get install flex

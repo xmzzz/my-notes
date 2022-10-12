@@ -32,6 +32,8 @@ git format-patch -1 2691e0267 -o ~/path/
 ```
 git log -p -1 185143bd
 git log --oneline
+git show --stat f91840a32deef5cb1bf73338bc5010f843b01426
+git show  f91840a32deef5cb1bf73338bc5010f843b01426
 ```
 # After PR merged, delete dev branch, syn local repo
 ```
@@ -88,3 +90,28 @@ Since "git pull" tries to merge remote changes with your local ones, a so-called
 Like for many other actions, it's highly recommended to start a "git pull" only with a clean working copy. This means that you should not have any uncommitted local changes before you pull. Use Git's Stash feature to save your local changes temporarily.
 
 	-- from: https://www.git-tower.com/learn/git/faq/difference-between-git-fetch-git-pull
+
+# patch
+```
+vim ~/.gitconfig [core] editor = vim
+
+git diff [A.cc | commitID] > test.patch
+
+git format-patch -M master  # 当前分支所有超前master的提交
+
+git format-patch [commitID] # 某次提交以后的所有patch
+
+git format-patch --root 4e162b  # 从根到指定提交的所有patch
+
+git format-patch [commitID] .. [commitID]  # 两次提交之间的所有patch
+
+git format-patch -n [commitID]  [-o ~/path/]  # 某次提交及前n次提交
+
+git apply --stat xxx.patch  # 先检查patch文件
+
+git apply --check xxx.patch  # 检查能否应用成功
+
+git apply xxx.patch  # 打补丁
+
+git apply --reject xxx.patch  #自动合入不冲突的代码，同时保留冲突的部分
+```
