@@ -634,7 +634,7 @@ Thread 2 hit Breakpoint 1, start_kernel () at /build/linux-riscv-6fOnN1/linux-ri
 
 - 调试环境搭建完成
 
-调试过程中发现代码执行顺序有时会异常，打印变量有时会显示值为 <optimized out> 。估计与内核编译中的优化有关，留待后续解决（TODO）  
+调试过程中发现代码执行顺序有时会异常，打印变量有时会显示值为 `<optimized out>` 。估计与内核中的编译优化有关，留待后续解决（TODO）  
 
 如果打印变量值显示 `<error reading variable: dwarf2_find_location_expression: Corrupted DWARF expression.>` ，升级 GDB 版本到 11 以上可以解决， 
 
