@@ -51,12 +51,12 @@ $ uname -rp
 安装编译内核需要的依赖：
 
 ```
-sudo apt update
-sudo apt upgrade
-sudo apt install libncurses-dev flex bison openssl libssl-dev \
+$ sudo apt update
+$ sudo apt upgrade
+$ sudo apt install libncurses-dev flex bison openssl libssl-dev \
                  dkms libelf-dev libudev-dev libpci-dev       \
                  libiberty-dev autoconf
-sudo apt autoremove
+$ sudo apt autoremove
 ```
 
 # 第一部分 更换 QEMU 中 x86 Ubuntu 默认内核并用 GDB 远程调试
@@ -201,7 +201,7 @@ QEMU 可以通过源码安装，也可以 `apt` 安装，过程可参考相关�
 - 首先在 Ubuntu 官网下载好 `ubuntu-22.04.1-desktop-amd64.iso` 镜像文件
 
 ```
-wget https://releases.ubuntu.com/22.04.1/ubuntu-22.04.1-desktop-amd64.iso
+$ wget https://releases.ubuntu.com/22.04.1/ubuntu-22.04.1-desktop-amd64.iso
 ```
 
 - 创建 QEMU img 文件，命名为 `test.qcow2`  
