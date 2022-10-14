@@ -49,7 +49,9 @@ sudo apt-get remove package_name
 # ubuntu 查找已安装的包
 dpkg -l | grep -i "name"
 
-# extract tar.xz files
+# extract .tar.xz
 apt install xz-utils
 tar -xf xxx.tar.xz
 
+# extract .tar.bz2
+tar -jxvf ×××.tar.bz2
