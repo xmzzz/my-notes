@@ -1,16 +1,23 @@
+文章标题： 为 QEMU RISC-V Ubuntu 更换 Linux 内核
+
+- 作 者： 明 政
+
+- 邮 箱： xingmingzheng@iscas.ac.cn
+
 # 前言
 
-在 QEMU 中启动 ubuntu-22.04-preinstalled-server-riscv64+unmatched.img 镜像之后，利用 GDB 调试内核时发现内核代码的执行顺序有时会跳，有时代码执行到某处突然就跳出当前函数了，影响调试。通过查看 `/boot/config-xxx` 文件，发现默认内核开启了编译优化选项，原因可能跟此有关，因此需要编译新的内核并替换。
+用 QEMU 启动 ubuntu-22.04-preinstalled-server-riscv64+unmatched.img 镜像之后，利用 GDB 调试内核时发现内核代码的执行顺序有时会跳，有时代码执行到某处突然就跳出当前函数了，影响调试。通过查看 `/boot/config-5.15.0-1018-generic` 文件，发现默认内核开启了编译优化选项，原因可能跟此有关，因此需要编译新的内核并替换。
 
 # 出错过程记录
 
 编译内核先是采用了在宿主机 x86 ubuntu 22.04 下交叉编译出内核安装包，拷贝到 qemu 启动的 riscv ubuntu 下进行安装。
 
-- 宿主机下进入内核源码根目录，我下载的内核版本是 `linux--5.15.72`
+- 宿主机下进入内核源码根目录，我下载的内核版本是 `linux-5.15.72`
 
-- 先从虚拟机中拷贝原内核配置文件 `/boot/config-xxx` -> `.config`
+- 先从虚拟机中拷贝原内核配置文件 `cp /boot/config-5.15.0-1018-generic .config`
 
 - 在宿主机编译内核
+
 ```
 $ make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- menuconfig
 $ make ARCH=riscv CROSS_COMPILE=riscv64-linux-gnu- -j4 bindeb-pkg
@@ -148,11 +155,11 @@ resetting ...
 ...
 ```
 
-原因暂时还未知，未来会知道的。
+- 原因暂时还未知，未来会知道的。
 
-# “正确” 启动新内核的方法
+# “正确”的启动新内核的方法
 
-试了另一种方法可以顺利启动，但不确定这是最好的方式
+试了另一种方法可以顺利启动，但不确定这是最好的方式，做一下记录
 
 - 启动虚拟机，在虚拟机中操作如下
 
@@ -263,7 +270,7 @@ Starting kernel ...
 ...
 ```
 
-- 新内核启动后，调试内核果然代码的执行顺序基本正常，未见突然跳转的现象
+- 新内核启动后，调试内核代码的执行顺序基本正常，未见突然跳转的现象
 
 - GDB 调试内核时若提示找不到代码路径，需要用 `dir /src/dir/path` 命令来设置
 
