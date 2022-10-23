@@ -1,3 +1,10 @@
+# 实时监控 dmesg
+```
+$ sudo dmesg -wH
+$ watch -n 0.1 "dmesg | tail -n $((LINES-6))"
+```
+from: http://t.zoukankan.com/welhzh-p-5006448.html
+
 # Check which desktop environment you are using
 ```
 $ echo $XDG_CURRENT_DESKTOP

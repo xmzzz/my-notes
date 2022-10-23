@@ -1,3 +1,8 @@
+# How to extract vmlinuz gzip image
+```
+$ sudo gzip -dc /boot/vmlinuz-xxx | dd of=/boot/vmlinuz-tmp
+```
+
 # make clean, make mrproper, make distclean
 
 在make的时候，会重新生成objects， 新的object覆盖旧的objects
