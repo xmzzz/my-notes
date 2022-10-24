@@ -1,3 +1,10 @@
+文章标题： kernel modules 与 kprobe_example 的用法
+
+- 作 者： 明 政
+
+- 邮 箱： xingmingzheng@iscas.ac.cn
+
+
 # 前言
 
 记录一下跑 kprobe 例子的过程，内容涉及
@@ -139,7 +146,7 @@ $ sudo dmesg
 [ +30.876098] Lockdown: insmod: unsigned module loading is restricted; see man kernel_lockdown.7
 ```
 
-- 现在为该模块签名，命令如下
+- 为该模块签名，命令如下
 
 ```
 $ kmodsign sha512 MOK.priv MOK.der kprobe_example.ko
@@ -160,7 +167,7 @@ $ hexdump -Cv kprobe_example.ko | tail -n 5
 
 # 给内核模块传递参数
 
-阅读 `kprobe_example.c` 代码，有一行负责传递参数的语句，学习了下相关用法，记录以下
+阅读 `kprobe_example.c` 代码，有一行负责传递参数的语句，学习了下相关用法，记录一下
 
 ```
 module_param_string(symbol, symbol, sizeof(symbol), 0644);
@@ -196,7 +203,7 @@ module_param_array(array, int, &num, 0664);
 
 - 传递字符串：module_param_string(传递参数时的字符串名称, 字符串名称, 字符串大小, 权限);
 
-- 传递字符串时注意前两个参数容易混淆，第二个是在程序中的名称，第一个是传递参数时的名称，一般可以取一样的名字。
+- 传递字符串时注意前两个参数容易混淆，第二个是在程序中的名称，第一个是传递参数时的名称，一般可以取一样的名字
 
 ```
 char str[12] = {};
@@ -296,7 +303,7 @@ sudo insmod mod_test.ko intval=101 p="pppp" array=1,1,1 estr="kernel_thread"
 
 - 在 dmesg 中可以看到参数传递进去了
 
-- 另外加载模块后，会在/sys/modules下生成一个模块的文件夹，里面会有parameters文件夹，包含的以参数名命名的文件节点，里面保存了我们传递的参数值
+- 另外加载模块后，会在 `/sys/modules/` 下生成一个模块的文件夹，里面会有 `parameters` 文件夹，包含的以参数名命名的文件节点，里面保存了我们传递的参数值
 
 ```
 $ cat /sys/module/mod_test/parameters/estr 
