@@ -4,10 +4,7 @@
 
 - 邮 箱： xingmingzheng@iscas.ac.cn
 
-
-# 前言
-
-记录一下跑 kprobe 例子的过程，内容涉及
+在此记录一下跑 kprobe 例子的过程，内容涉及
 
 - 编译内核模块
 - 安全引导模式下为内核模块签名
@@ -212,7 +209,7 @@ module_param_string(estr, str, sizeof(str), 0664);
 
 - 仿照 kprobe_example.c 自己写一个示例程序，用来试验传递参数
 
-- `mod_test.c`
+- `$ vim mod_test.c`
 
 ```
 // SPDX-License-Identifier: GPL-2.0-only
