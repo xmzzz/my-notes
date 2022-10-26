@@ -1,8 +1,14 @@
-# 开启内核参数
+文章标题： 尝试 RISC-V Ubuntu 下的 uprobe
+
+- 作 者： 明 政
+
+- 邮 箱： xingmingzheng@iscas.ac.cn
+
+# 正文开始
 
 - 若要使用 uprobe 特性，编译内核需要开启 CONFIG_UPROBE_EVENTS=y 
 
-- 准备一个试验用简单 C 程序 `$ vim test.c`
+- 准备一个简单的 C 程序 `$ vim test.c`
 
 ```
 #include <stdio.h>
@@ -64,7 +70,14 @@ tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
 # echo 1 > tracing_on
 ```
 
-- 可在另一终端运行可执行程序 test ，接着回到 root
+- 可在另一终端运行可执行程序 test
+
+```
+$ ./test
+test_uprobe() called
+```
+
+- 接着回到 root 终端
 
 ```
 # echo 0 > tracing_on
@@ -90,6 +103,6 @@ tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime)
             test-41995   [006] ..... 30126.051056: p_test_0x1149: (0x55d29791a149)
 ```
 
-- 参考资料
+# 参考资料
 
 - https://www.kernel.org/doc/html/latest/trace/uprobetracer.html
