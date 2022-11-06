@@ -1,3 +1,16 @@
+# 带有 submodule 的工程
+
+```
+$ git submodule update --init --recursive
+```
+
+相当于分别执行
+
+```
+$ git submodule init
+$ git submodule update
+```
+
 # git config 
 ```
 git config --global user.name "YourName"
