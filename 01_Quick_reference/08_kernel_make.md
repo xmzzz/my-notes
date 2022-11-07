@@ -1,3 +1,9 @@
+# kernel dbgsym path
+
+```
+/usr/lib/debug/boot/vmlinux-5.15.53
+```
+
 # How to extract vmlinuz gzip image
 ```
 $ sudo gzip -dc /boot/vmlinuz-xxx | dd of=/boot/vmlinuz-tmp
