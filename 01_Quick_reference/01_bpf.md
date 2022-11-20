@@ -1,3 +1,28 @@
+# Clang target bpf compile issue/fail on Ubuntu and Debian
+
+The BPF UAPI header file <linux/bpf.h> includes <linux/types.h>, which gives
+BPF-programs access to types e.g. __u32, __u64, __u8, etc.
+
+On Ubuntu/Debian when compiling with clang option[1] "-target bpf" the
+compile fails because it cannot find the file <asm/types.h>, which is
+included from <linux/types.h>. This is because Ubuntu/Debian tries to
+support multiple architectures on a single system[2]. On x86_64 the file
+<asm/types.h> is located in /usr/include/x86_64-linux-gnu/, which the distro
+compiler will add to it's search path (/usr/include/<triplet> [3]). Note, it
+works if not specifying target bpf, but as explained in kernel doc[1] the
+clang target bpf should really be used (to avoid other issues).
+
+There are two workarounds: (1) To have an extra include dir on Ubuntu (which
+seems too x86 specific) like: CFLAGS += -I/usr/include/x86_64-linux-gnu .
+Or (2) install the package gcc-multilib on Ubuntu.
+
+Links:
+[1] https://www.kernel.org/doc/html/latest/bpf/bpf_devel_QA.html#q-clang-flag-for-target-bpf
+[2] https://wiki.ubuntu.com/MultiarchSpec
+[3] https://wiki.osdev.org/Target_Triplet
+
+from: https://www.spinics.net/lists/xdp-newbies/msg01770.html
+
 # BPF的应用场景
 它被用于高性能负载平衡、DDoS 缓解（ DDoS mitigation ）和防火墙、内核和用户空间代码的安全检测等。
 网络数据跟踪、内核探测、perf性能事件等

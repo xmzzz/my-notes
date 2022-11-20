@@ -1,3 +1,30 @@
+# 删除未跟踪文件
+
+```
+$ git clean -d -n	# 空运行
+$ git clean -d -f	# 强制删除
+$ git clean -d -i	# 交互方式删除
+$ git clean -d -n src	# 指定目录
+```
+
+# 版本回退和前进
+
+```
+$ git reflog
+$ git reset --hard commitId
+$ git reset --hard HEAD^	# 回退到上一版本
+```
+
+# 查看历史改动
+
+```
+$ git blame filename    # 每行代码左侧会显示 commit-id
+$ git blame -L 60,150 filename    # 可指定行数范围
+$ git show commit-id    # 查看详细的 commit 记录
+$ git log -S 'deleted_code' filename   # 查看某行代码的删除记录
+$ git log --full-history [-3] -- [file path]   # 查看历史 commit 记录，可指定文件或显示条目数量
+```
+
 # 带有 submodule 的工程
 
 ```

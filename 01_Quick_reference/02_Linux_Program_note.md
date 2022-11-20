@@ -1,3 +1,16 @@
+# 获取结构体偏移值
+
+```
+#define offsetof(s,m) (size_t)&(((s *)0)->m) 
+```
+
+- ((s *)0): 强制转化成数据结构指针,并使其指向地址0；
+- ((s *)0)->m: 使该指针指向成员m
+- &(((s *)0)->m): 获取该成员m的地址
+- (size_t)&(((s *)0)->m): 转化这个地址为合适的类型
+
+https://blog.csdn.net/weixin_42615308/article/details/86001794
+
 # When to use static inline instead of regular functions
 	-- from: https://stackoverflow.com/questions/28926828/when-to-use-static-inline-instead-of-regular-functions
 
