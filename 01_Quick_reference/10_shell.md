@@ -1,4 +1,19 @@
+# 进程相关
+
+```
+$ ctrl + z 进程暂停并放到后台
+$ watch -n 5 sh test.sh &	# 每 5s 在后台执行一次 test.sh 脚本
+$ jobs -l	# 显示所有任务的 PID
+$ fg %jobnumber		# 后台调到前台继续运行
+$ bg $jobnumber		# 后台暂停变为后台继续运行
+
+$ kill %jobnumber	# 3 种终止方法
+$ kill pid
+$ Ctrl + c 
+```
+
 # 实时监控 dmesg
+
 ```
 $ sudo dmesg -wH
 $ watch -n 0.1 "dmesg | tail -n $((LINES-6))"
@@ -6,6 +21,7 @@ $ watch -n 0.1 "dmesg | tail -n $((LINES-6))"
 from: http://t.zoukankan.com/welhzh-p-5006448.html
 
 # Check which desktop environment you are using
+
 ```
 $ echo $XDG_CURRENT_DESKTOP
 ```
@@ -56,12 +72,19 @@ sudo apt-get remove package_name
 # ubuntu 查找已安装的包
 dpkg -l | grep -i "name"
 
-# extract .tar.xz
-apt install xz-utils
-tar -xf xxx.tar.xz
+# unzip .tar.xz | .tar.gz
 
-# extract .tar.bz2
-tar -jxvf ×××.tar.bz2
+```
+$ apt install xz-utils
+$ tar -xf xxx.tar.xz
+$ tar -xf xxx.tar.gz
+```
+
+# unzip .tar.bz2
+
+```
+$ tar -jxvf ×××.tar.bz2
+```
 
 # 修改终端字体颜色
 

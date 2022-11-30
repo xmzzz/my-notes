@@ -1,3 +1,4 @@
+
 # 删除未跟踪文件
 
 ```
@@ -64,9 +65,9 @@ git log
 ```
 # git patch
 ```
-git diff > xxx.patch
-git format-patch -1 2691e0267 -o ~/path/
-git format-patch -1 2691e0267 -o ~/path/
+$ git diff > xxx.patch
+$ git format-patch -1 2691e0267 -o ~/path/	# 打包指定的 commit
+$ git format-patch -3 2691e0267		# 分别打包 commitID 开始的 3 个 commit
 ```
 # git log
 ```
