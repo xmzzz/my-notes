@@ -1,3 +1,13 @@
+# module 版本检查
+
+如果 ko 与内核版本不一致，加载时可能会报 "invalid module format" 错误。
+
+可以尝试关闭模块版本检查内核参数
+
+```
+Enable loadable module support  --->[]   Module versioning support
+```
+
 # kernel dbgsym path
 
 ```
