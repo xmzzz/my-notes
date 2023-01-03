@@ -1,6 +1,8 @@
+文章标题： kexec 和 kdump
 
+- 作 者： 明 政
 
-kexec 和 kdump
+- 邮 箱： xingmingzheng@iscas.ac.cn
 
 在使用 Linux 系统时，难免会出现内核崩溃的情况，这在 Windows 系统中通常会“蓝屏”，显示一些文本信息，想恢复正常使用就得断电重启了。
 
