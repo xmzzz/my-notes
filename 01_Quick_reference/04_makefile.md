@@ -1,3 +1,13 @@
+# patsubst 函数
+
+```
+$(patsubst 原模式,目标模式,文件列表)
+```
+
+在 `$(patsubst %.c,%.o,$(dir))` 中，patsubst 把 `$(dir)` 中的变量符合后缀是 `.c` 的全部替换成 `.o`
+
+在 `$(patsubst pattern,replacement,text)` 中，表示寻找 text 中符合模式 pattern 的字，用 replacement 替换
+
 # What is ?= in Makefile
 ?= indicates to set the KDIR variable only if it's not set/doesn't have a value.
 For example:

@@ -41,11 +41,13 @@ $ git submodule update
 
 # git config 
 ```
-git config --global user.name "YourName"
-git config --global user.name
-git config --global user.email "xxx@xxx.com"
-git config --global user.email
-git config --global core.editor vim
+$ git config --global user.name "YourName"
+$ git config --global user.name
+$ git config --global user.email "xxx@xxx.com"
+$ git config --global user.email
+$ git config --global core.editor vim
+$ git config --list
+$ git config --global --unset user.name
 ```
 # pull request
 ```
