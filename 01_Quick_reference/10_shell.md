@@ -1,3 +1,11 @@
+# mount 挂载 windows 分区
+
+```
+$ sudo fdisk -l
+$ sudo mkdir /mnt/nvme0n1p3
+$ sudo mount /dev/nvme0n1p3 /mnt/nvme0n1p3
+```
+
 # 进程相关
 
 ```

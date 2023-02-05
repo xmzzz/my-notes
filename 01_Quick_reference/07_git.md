@@ -1,3 +1,17 @@
+# CAfile fatal
+
+- 如果出现类似下面的 CAfile 相关错误
+
+```
+fatal: unable to access 'https://xxx.git/': server certificate verification failed. CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none
+```
+
+- 可以尝试下面两个方法之一
+
+```
+$ sudo update-ca-certificates
+$ export GIT_SSL_NO_VERIFY=1
+```
 
 # 删除未跟踪文件
 
