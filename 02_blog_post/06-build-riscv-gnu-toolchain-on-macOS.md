@@ -47,22 +47,6 @@ origin  https://mirrors.ustc.edu.cn/homebrew-core.git (fetch)
 origin  https://mirrors.ustc.edu.cn/homebrew-core.git (push)
 ```
 
-# brew tap
-
-- mac 编译 riscv-gnu-toolchain 时，官方仓库文档有一步是 `brew tap discoteq/discoteq`
-
-- Tap 是什么，A Git repository of Formulae and/or commands
-
-- Tap 存储路径为 `/usr/local/Homebrew/Library/Taps/`
-
-- 比如 `/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core`
-
-- 删除 Tap 的方法 `brew untap [-f|--force]  discoteq/discoteq`
-
-- brew 的这个 [文档](https://docs.brew.sh/Formula-Cookbook#homebrew-terminology)，解释了 Tap cask bottle 等名词和存储位置
-
-- 以下地址可以 [手动搜索包](https://formulae.brew.sh/)，也可以用 `brew search` 搜索
-
 # build riscv-gnu-toolchain
 
 过程参考的 [源码仓](https://github.com/riscv-collab/riscv-gnu-toolchain) 的 README
@@ -399,6 +383,23 @@ alias unproxy='unset all_proxy'
 % git config --global --unset http.proxy
 % git config --global --unset https.proxy
 ```
+
+## brew tap
+
+- mac 编译 riscv-gnu-toolchain 时，官方仓库文档有一步是 `brew tap discoteq/discoteq`
+
+- Tap 是什么，A Git repository of Formulae and/or commands
+
+- Tap 存储路径为 `/usr/local/Homebrew/Library/Taps/`
+
+- 比如 `/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core`
+
+- 删除 Tap 的方法 `brew untap [-f|--force]  discoteq/discoteq`
+
+- brew 的这个 [文档](https://docs.brew.sh/Formula-Cookbook#homebrew-terminology)，解释了 Tap cask bottle 等名词和存储位置
+
+- 可以 [手动搜索包](https://formulae.brew.sh/)，也可以用 `brew search` 搜索
+
 
 # 参考链接
 
