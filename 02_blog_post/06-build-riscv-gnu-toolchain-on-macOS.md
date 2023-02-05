@@ -14,7 +14,7 @@
 
 - 打开磁盘工具，添加宗卷，格式为 APFS（区分大小写）
 
-- 新添加的宗卷会自动挂载到 /Volumes 下，新宗卷以原磁盘为“容器”，共享原磁盘空间
+- 新添加的宗卷会自动挂载到 `/Volumes` 下，新宗卷以原磁盘为“容器”，共享原磁盘空间
 
 # 安装 homebrew，用来安装依赖包
 
@@ -59,19 +59,15 @@ origin  https://mirrors.ustc.edu.cn/homebrew-core.git (push)
 
 - 删除 Tap 的方法 `brew untap [-f|--force]  discoteq/discoteq`
 
-- brew 的文档，解释了 Tap cask bottle 等名词和存储位置
+- brew 的这个 [文档](https://docs.brew.sh/Formula-Cookbook#homebrew-terminology)，解释了 Tap cask bottle 等名词和存储位置
 
-https://docs.brew.sh/Formula-Cookbook#homebrew-terminology
-
-- 以下地址可以手动搜索包
-
-https://formulae.brew.sh/
+- 以下地址可以 [手动搜索包](https://formulae.brew.sh/)，也可以用 `brew search` 搜索
 
 # build riscv-gnu-toolchain
 
-过程参考的[源码仓](https://github.com/riscv-collab/riscv-gnu-toolchain) 的 README
+过程参考的 [源码仓](https://github.com/riscv-collab/riscv-gnu-toolchain) 的 README
 
-不过用 `git clone https://github.com/riscv/riscv-gnu-toolchain` 下载源码后编译出错，改用以下命令下载
+不过用 `git clone https://github.com/riscv/riscv-gnu-toolchain` 下载源码后编译报错，改用以下命令下载可以了
 
 ```
 git clone --recursive  https://github.com/riscv/riscv-gnu-toolchain
@@ -130,6 +126,11 @@ riscv64-unknown-elf-gcc			riscv64-unknown-elf-ld			riscv64-unknown-elf-strip
 riscv64-unknown-elf-gcc-12.2.0		riscv64-unknown-elf-ld.bfd
 riscv64-unknown-elf-gcc-ar		riscv64-unknown-elf-lto-dump
 ```
+安装 qemu
+
+```
+% brew install qemu
+```
 
 # 构建时遇到的错误和解决方法
 
@@ -156,7 +157,7 @@ HTTP/2 stream 1 was not closed cleanly before end of the underlying stream
 
 ```
 % git config --global http.version HTTP/1.1
-···
+```
 
 - mac 自带 make 版本低，更新
 
@@ -180,7 +181,7 @@ configure: error:
 make: *** [Makefile:363: stamps/build-glibc-linux-rv64imafdc-lp64d] Error 1
 ```
 
-brew 没有 gnumake 这个包，手动建立软连接解决
+手动建立软连接解决了
 
 ```
 work@192 riscv-gnu-toolchain % cd /usr/local/opt/make/libexec/gnubin/
@@ -202,12 +203,6 @@ GNU Make 4.4
 
 ```
 % brew install bison
-```
-
-# 安装 qemu
-
-```
-% brew install qemu
 ```
 
 - ulimit 错误：打开了过多文件
