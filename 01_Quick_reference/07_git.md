@@ -1,3 +1,48 @@
+# 分支相关
+
+- 新建远程已有分支
+
+```
+$ git checkout -b new_branch origin/xxx # 新建分支并同步远程分支
+```
+
+- 和远程仓库建立连接
+
+```
+$ git remote add origin https://github.com/xxx/notes.git
+```
+
+- 获取远程仓库某分支
+
+```
+$ git fetch origin branch_name
+```
+
+- 拉取远程分支内容到本地
+
+```
+$ git pull origin branch_name
+```
+
+- 查看远程所有分支
+
+```
+$ git branch -r
+```
+
+- 删除本地分支和远程分支
+
+```
+$ git branch -d branchName
+$ git push origin :branchName
+```
+
+- 重命名分支
+
+```
+$ git branch -m oldName newName
+```
+
 # CAfile fatal
 
 - 如果出现类似下面的 CAfile 相关错误
