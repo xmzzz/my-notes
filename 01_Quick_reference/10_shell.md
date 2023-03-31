@@ -1,3 +1,25 @@
+# diff
+
+- 比较两个文件的区别并用并排的格式输出
+
+- 参数： -y(并排显示)  -W(指定行宽)
+
+```
+$ diff test01.md test02.md -y -W 140
+I need to buy apples.                           I need to buy apples.
+I need to run the laundry.                    | I need to do the laundry.
+I need to wash the dog.                       | I need to wash the car.
+I need to get the car detailed.               | I need to get the dog detailed.
+```
+
+- 说明:
+"|"表示前后2个文件内容有不同
+"<"表示后面文件比前面文件少了1行内容
+">"表示后面文件比前面文件多了1行内容
+
+- 参考：https://blog.csdn.net/qq646748739/article/details/81182673
+
+
 # mount 挂载 windows 分区
 
 ```

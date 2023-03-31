@@ -1,3 +1,9 @@
+# clone 并重命名
+
+```
+$ git clone https://foo.git newname
+```
+
 # 分支相关
 
 - 新建远程已有分支
