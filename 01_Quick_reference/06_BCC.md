@@ -1,3 +1,14 @@
+# cmake luajit not found
+
+```
+$ cmake ..
+...
+Could NOT find LuaJIT (missing: LUAJIT_LIBRARIES LUAJIT_INCLUDE_DIR)
+...
+
+$ sudo apt install libluajit-5.1-dev
+```
+
 # BCC install and debug
 ```
 cmake -DCMAKE_BUILD_TYPE=DEBUG ..

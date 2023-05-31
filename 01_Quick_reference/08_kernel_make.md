@@ -1,3 +1,145 @@
+# OLK-510 内核编译报错 `undefined reference to 'EVP_PKEY_set_alias_type'`
+
+- 检索到“The function EVP_PKEY_set_alias_type() was previously documented on this page. It was removed in OpenSSL 3.0.”，推测原因是 libssl-dev 版本问题
+
+- openssl版本查询
+
+```
+$ openssl version
+OpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)
+```
+
+- 增加包含旧版本libssl的源
+
+```
+$ sudo vim /etc/apt/sources.list
+$ #新增 `deb http://security.ubuntu.com/ubuntu focal-security main`
+$ apt update
+$ apt search libssl
+libssl-dev/jammy-updates,jammy-security,now 3.0.2-0ubuntu1.9 amd64 [installed]
+  Secure Sockets Layer toolkit - development files
+...
+libssl1.1/focal-security 1.1.1f-1ubuntu2.18 amd64
+  Secure Sockets Layer toolkit - shared libraries
+
+libssl3/jammy-updates,jammy-security,now 3.0.2-0ubuntu1.9 amd64 [installed,automatic]
+  Secure Sockets Layer toolkit - shared libraries
+...
+$
+$ apt-cache show libssl-dev 
+Package: libssl-dev
+Architecture: amd64
+Version: 3.0.2-0ubuntu1.9
+Multi-Arch: same
+Priority: optional
+Section: libdevel
+Source: openssl
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian OpenSSL Team <pkg-openssl-devel@alioth-lists.debian.net>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 12089
+Depends: libssl3 (= 3.0.2-0ubuntu1.9)
+Suggests: libssl-doc
+Conflicts: libssl1.0-dev
+Filename: pool/main/o/openssl/libssl-dev_3.0.2-0ubuntu1.9_amd64.deb
+Size: 2373472
+MD5sum: 5f786940364827633d35250c8e3be024
+SHA1: 5966802190d97888872b5ec121e4bdc66eeebcf4
+SHA256: 09409630f0d470153334642508efb2b33e77c7bf5c0c95afb931cb251bdc29f9
+SHA512: 922be29ed788aa450887fa165bb042fa2ac3b16d2d2a90744371e7e2beed37f24553e3672c01363ceec5a7238b161a63b8aed15186d1ebb9eb79ae7307642050
+Homepage: https://www.openssl.org/
+Description-en_GB: Secure Sockets Layer toolkit - development files
+ This package is part of the OpenSSL project's implementation of the SSL
+ and TLS cryptographic protocols for secure communication over the
+ Internet.
+ .
+ It contains development libraries, header files, and manpages for libssl
+ and libcrypto.
+Description-md5: 27044468897c45b271f879c7c6e135fe
+
+Package: libssl-dev
+Architecture: amd64
+Version: 3.0.2-0ubuntu1
+...
+$
+$ apt-cache madison libssl-dev
+libssl-dev | 3.0.2-0ubuntu1.9 | http://cn.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages
+libssl-dev | 3.0.2-0ubuntu1.9 | http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages
+libssl-dev | 3.0.2-0ubuntu1 | http://cn.archive.ubuntu.com/ubuntu jammy/main amd64 Packages
+libssl-dev | 1.1.1f-1ubuntu2.18 | http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages
+$
+$ apt-cache policy libssl-dev 
+libssl-dev:
+  Installed: (none)
+  Candidate: 3.0.2-0ubuntu1.9
+  Version table:
+     3.0.2-0ubuntu1.9 500
+        500 http://cn.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages
+        500 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages
+     3.0.2-0ubuntu1 500
+        500 http://cn.archive.ubuntu.com/ubuntu jammy/main amd64 Packages
+     1.1.1f-1ubuntu2.18 500
+        500 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages
+$ sudo apt remove libssl-dev
+$ sudo apt-get install libssl-dev=1.1.1f-1ubuntu2.18
+```
+- （TODO:两版本同时存在）
+
+- https://www.openssl.org/docs/man3.0/man3/EVP_PKEY_id.html
+- https://packages.ubuntu.com/focal/i386/openssl/download
+- https://blog.csdn.net/qq_27011361/article/details/83277209
+
+# openssl
+
+```
+fatal error: openssl/opensslv.h: No such file or directory
+$ sudo apt install libssl-dev
+```
+
+# tained kernel
+
+```
+$ cat /proc/sys/kernel/tainted
+```
+
+# IO scheduler
+
+```
+$ cat /sys/block/vda/queue/scheduler 
+[mq-deadline] kyber bfq none
+$ echo bfq > /sys/block/vda/queue/scheduler
+$ cat /sys/block/vda/queue/scheduler
+mq-deadline kyber [bfq] none
+```
+
+# hung_task_warning
+
+The maximum number of warnings to report. During a check interval if a hung task is detected, this value is decreased by 1. When this value reaches 0, no more warnings will be reported. This file shows up if CONFIG_DETECT_HUNG_TASK is enabled.
+
+-1: report an infinite number of warnings.
+
+```
+# sysctl kernel.hung_task_warnings
+kernel.hung_task_warnings = 0
+# echo 20 > /proc/sys/kernel/hung_task_warnings
+# sysctl kernel.hung_task_warnings
+kernel.hung_task_warnings = 20
+
+```
+
+# 当前内核config
+
+```
+$ cat /proc/config.gz | gzip -d > config.tmp
+```
+
+# 当前内核启动参数
+
+```
+$ cat /proc/cmdline
+```
+
 # module 版本检查
 
 如果 ko 与内核版本不一致，加载时可能会报 "invalid module format" 错误。

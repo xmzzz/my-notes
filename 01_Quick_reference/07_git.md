@@ -6,6 +6,12 @@ $ git clone https://foo.git newname
 
 # 分支相关
 
+- set-url
+
+```
+$ git remote set-url origin XXXX.git
+```
+
 - 新建远程已有分支
 
 ```

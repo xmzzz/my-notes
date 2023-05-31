@@ -1,3 +1,70 @@
+# shell 脚本记录
+
+- 去掉4中与3重合的项，并保存到6
+```
+while read line; do
+  if [[ $line =~ ^[[:blank:]]*$ || $line =~ ^[[:blank:]]*# ]]; then
+    continue
+  fi
+    l=${line/%=*/=}
+    if ! grep -q $l 3-config.config; then
+      echo $line
+    fi
+done < 4-config.config >6-config.config
+```
+
+# ssh 相关
+
+- 确认宿主机是否安装了 openssh-client, openssh-server
+- 安装后确认ssh-server已启动(sshd)
+-
+```
+$ dpkg -l | grep ssh
+$ ps -e | grep ssh
+$ sudo /etc/init.d/ssh start # stop, restart
+$ ssh -p 123 user@localhost 
+$ # ssh keygen
+$ ssh-keygen -t rsa
+$ ls ~/.ssh    # id_rsa id_rsa.pub
+$ ssh-copy-id user@localhost    # id_rsa.pub -> ~/.ssh/authorized_key
+$ # mount sshfs
+$ sshfs name@192.168.host.ip:/home/name/work/path/ ~/host_files
+$
+$ # start_qemu.sh 增加" -net user,hostfwd=::2222-:22 -net nic \ "
+```
+
+# 创建新用户及增加sudo权限
+
+```
+# adduser newuser
+# passwd newuser
+# vim /etc/sudoers
+```
+
+- 找到如下位置新增
+
+```
+## Alow root to run any commands anywhere
+root 	ALL=(ALL)	ALL
+newuser	ALL=(ALL)	All
+```
+
+# python 相关
+
+- 查看编译python时的默认配置，包括module搜索路径
+
+```
+$ python -m sysconfig
+```
+
+- 查看真实的module搜索路径
+
+```
+$ python3 -c “import sys;print(sys.path)”
+
+```
+- 通过 `$PATH PYTHONPATH` 可以向 `sys.path` 添加值
+
 # diff
 
 - 比较两个文件的区别并用并排的格式输出
@@ -102,18 +169,31 @@ sudo apt-get remove package_name
 # ubuntu 查找已安装的包
 dpkg -l | grep -i "name"
 
+# zstd zst 文件解压
+
+```
+$ zstd -d XXX.zst
+```
+
 # unzip .tar.xz | .tar.gz
 
 ```
 $ apt install xz-utils
 $ tar -xf xxx.tar.xz
 $ tar -xf xxx.tar.gz
+$ xz -dk xxx.xz    # d 解压.xz , k 保留源文件
 ```
 
 # unzip .tar.bz2
 
 ```
 $ tar -jxvf ×××.tar.bz2
+```
+
+# unzip .tar
+
+```
+$ tar -xvf xxx.tar
 ```
 
 # 修改终端字体颜色
