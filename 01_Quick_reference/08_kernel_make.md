@@ -1,3 +1,66 @@
+# revyOS gpu drvier
+
+- `$(PVRSRV_MODNAME)-y` 的形成过程在 `gpu_bxm_4_64-kernel/rogue_km/services/server/env/linux/Kbuild.mk`
+- `$(PVRSRVKM_NAME)-y` 的形成过程在 `gpu_bxm_4_64-kernel/rogue_km/services/system/rogue/rgx_thead/Kbuild.mk`
+- `drm_nulldisp-y` 的形成过程 `rogue_km/kernel/drivers/staging/imgtec/Kbuild.mk`
+
+1. 备份driver/gpu/drm/img_rogue/ 下的 config_kernel.h config_kernel.mk 配置文件，Kconfig，Makefile。
+
+2. 执行 copy sh
+
+3. 检查和更新 config_kernel.h config_kernel.mk
+
+4. 检查 rogue_km/copy-to-kernel-tc/copy_items.sh 中是否默认拷贝的为rgx_linux_tc 至 apollo的文件，
+   参考rogue_km/services/system/rogue/rgx_thead/Kbuild.mk文件，其中正确的PVR_SYSTEM值在config_kernel.mk中为rgx_thead，
+   而不是默认的rgx_linux_tc，需要参考上述文件修正相应的源文件。
+
+5. cp至kernel中的pvrsrvkm.mk同样需要修复默认的apollo相关源文件，apollo/sysconfig.o 修改为 sysconfig.o，
+   并cp正确的 sysconfig.c sysconfig.h 至 img_rogue目录
+
+```
+$ cp services/system/rogue/rgx_thead/sysconfig.* ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+```
+6. 在pvrsrvkm.mk中sysconfig.o之后增加thead_sys.o，并拷贝对应的 thead_sys.c .h 源文件
+
+```
+$ cp services/system/rogue/rgx_thead/thead_sys.* ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+```
+
+7. 拷贝 rgxconfig_km_ 和 rgxcore_km_ 文件
+
+```
+$ cp hwdefs/rogue/km/configs/rgxconfig_km_36.V.104.182.h ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/configs/
+$ cp hwdefs/rogue/km/cores/rgxcore_km_36.52.104.182.h ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/cores/
+```
+
+8. 参考 drm_nulldisp-y 的形成过程，cp源文件进内核
+
+```
+$ cp kernel/drivers/staging/imgtec/drm_nulldisp_drv.* ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+$ cp kernel/drivers/staging/imgtec/drm_nulldisp_netlink.* ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+$ cp kernel/drivers/staging/imgtec/drm_netlink_gem.* ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+$ cp kernel/drivers/staging/imgtec/drm_nulldisp_gem.* ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+```
+
+9. 补充
+
+```
+$ cp ./rogue_km/services/system/rogue/rgx_thead/sysinfo.h ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/
+$ cp rogue_km/include/ ~/todo/revyOS/thead-kernel/drivers/gpu/drm/img-rogue/ -r
+```
+
+10. 配置文件
+
+分析独立编译驱动时自动生成的配置文件，修改debug开关相关部分
+rogue_km/binary_thead_linux_wayland_release/config_kernel.h
+rogue_km/binary_thead_linux_wayland_release/config_kernel.mk
+
+# Kernel Modules | Section Mismatch
+
+- 参考内核源码 `include/linux/init.h`
+
+> https://tinylab.org/linux-kernel-section-mismatch-details/
+
 # OLK-510 内核编译报错 `undefined reference to 'EVP_PKEY_set_alias_type'`
 
 - 检索到“The function EVP_PKEY_set_alias_type() was previously documented on this page. It was removed in OpenSSL 3.0.”，推测原因是 libssl-dev 版本问题

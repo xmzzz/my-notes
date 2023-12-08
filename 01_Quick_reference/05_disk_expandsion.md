@@ -8,4 +8,5 @@ sudo blkid
 sudo vim /etc/fstab
 // work was on /dev/partition1
 UUID=234q250.....asf234198hf /home/${USERNAME}/new_partition_name ext4 defaults 0 3 
+sudo chmod 777 ./name
 ```

@@ -1,3 +1,26 @@
+# USDT
+
+```
+$ cat simple-c.c
+#include <sys/sdt.h>
+#include <sys/time.h>
+#include <unistd.h>
+
+int main(int argc, char **argv)
+{
+    struct timeval tv;
+
+    while(1) {
+        gettimeofday(&tv, NULL);
+        DTRACE_PROBE1(test-app, test-probe, tv.tv_sec);
+        sleep(1);
+    }
+    return 0;
+}
+$ sudo tplist.py -vv -l ./simple-c
+$ sudo trace.py 'u:/path/to/simple-c:test-probe "%u", arg1' -T -p $(pidof simple-c)
+```
+
 # cmake luajit not found
 
 ```
@@ -71,10 +94,16 @@ w  # 打印堆栈信息
 ```
 make VERBOSE=1
 gdb -args python /usr/share/bcc/tools/slabratetop
-b libbpf.c:480
-run
-b bpf_print_hints
-bt
+(gdb) b libbpf.c:480
+(gdb) run
+(gdb) b bpf_print_hints
+(gdb) bt (or where)
+(gdb) up
+(gdb) info breakpoints
+(gdb) del break 1
+(gdb) display input[i]
+(gdb) watch i
+(gdb) set print pretty on
 ```
 
 # about registers

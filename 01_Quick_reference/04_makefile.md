@@ -1,3 +1,11 @@
+# waf
+
+```
+$ waf distclean configure build install --prefix=/tmp --suffix=64
+```
+
+> https://stackoverflow.com/questions/9190093/how-to-specify-library-installation-path-suffix-in-waf
+
 # patsubst 函数
 
 ```

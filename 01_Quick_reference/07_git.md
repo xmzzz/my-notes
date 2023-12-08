@@ -1,3 +1,184 @@
+# git config settings
+
+```
+$ git config --list
+$ git config --get user.email
+$ git config --list --show-origin
+``` 
+
+# linux kernel | send patch to the mailing list
+
+- 前期配置
+
+```
+$ git config --global --edit
+[sendemail]
+	smtpserver = mail.example.org
+	smtpuser = you@example.org
+	smtpencryption = ssl
+	smtpserverport = 465
+
+$ git config --global sendemail.annotate yes
+$ git config format.signOff yes
+$ git config --global sendemail.smtpPass 'your password'
+$ git send-email --to="~mail/mail@.org" HEAD^
+$ git send-email --annotate -v2 HEAD^
+$ # add timely commentary below ---
+$
+$
+$ git send-email HEAD~3
+$ git send-email 209210d
+$ git send-email -1 HEAD^^
+```
+
+```
+Subject: [PATCH v2] Demonstrate that I can use git send-email
+
+---
+This fixes the issues raised from the first patch.
+
+your-name | 1 +
+1 file changed, 1 insertion(+)
+```
+
+
+- 缓存密码1小时: `git config --global credential.helper 'cache --timeout 3600'`
+
+> http://help.cstnet.cn/changjianwenti/youjianshoufa/xitongcanshu.html
+
+- commit message 每行不超过75?字
+
+```
+#vim
+:set textwidth=75
+```
+
+- 引用其他提交
+
+```
+$ git log -1 --abbrev=12 --pretty='format:%h ("%s")' <commitID>
+```
+
+- 如果有先前讨论，需要使用标签 `Link: <address>` 指明。lkml要使用lore永久链接：
+
+```
+Link: https://lore.kernel.org/r/<Message-Id>/
+```
+
+- 修复某commit 引入的问题时，引用不受行长限制：
+
+```
+Fixes: <需如上格式化的commit引用>
+```
+
+- 补丁和某人有关，添加 `Cc: ` 标签
+
+- `./scripts/checkpatch.pl -g <commit or revision range> 检查代码格式
+
+- `./scripts/get_maintainer.pl -f <file>` 获取可能的 reviewer 和邮件列表
+
+- 所有patch补丁应抄送 linux-kernel@vger.kernel.org ，注意一次不能超过15个补丁
+
+- [git send-email](https://git-send-email.io/)
+
+- 版本变更需要在 `---` 下添加 
+
+# 将一个commit转移到另一个分支上
+
+```
+$ git cherry-pick <commit id>
+```
+
+# github pubkey
+
+```
+https://github.com/<username>.keys
+$ curl -O https://github.com/<username>.keys
+```
+> https://changelog.com/posts/github-exposes-public-ssh-keys-for-its-users
+
+# 签名
+
+```
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+```
+
+# 重写历史 | 删除历史
+
+- 当前修改可先暂存
+
+```
+$ git stash
+```
+
+- 选择要修改的提交
+
+```
+$ git rebase -i HEAD~~~
+$ # 也可以用 commit ID，注意需要定位需要修改的上一个commitID
+$ git rebase -i dfg2jdaf
+```
+
+- `HEAD~~~`代表最后三个提交，波浪线符号个数代表提交个数
+
+- 会在编辑器中出现如下信息，将需要修改的commit的pick改为edit。删除的话修改为drop即可。
+
+```
+edit d6ccd23 update a, add a new line. 2nd rebase.
+pick 45cc625 update a, add 3,4 line. 2nd rebased
+pick b2ca1a6 update a, add 5,6 line.
+
+# Rebase 2eaed73..b2ca1a6 onto 2eaed73 (3 commands)
+#
+# Commands:
+# p, pick <commit> = use commit
+# r, reword <commit> = use commit, but edit the commit message
+# e, edit <commit> = use commit, but stop for amending
+# s, squash <commit> = use commit, but meld into previous commit
+# f, fixup [-C | -c] <commit> = like "squash" but keep only the previous
+#                    commit's log message, unless -C is used, in which case
+#                    keep only this commit's message; -c is same as -C but
+#                    opens the editor
+
+```
+
+- 保存退出后可以修改该提交和修改提交信息
+
+```
+$ git add .
+$ git commit --amend
+```
+
+- 若有冲突需要解决冲突，再执行 `git add .` 和 `git rebase --continue`，【不】需要再`git commit`。
+
+- 中途可用 `git rebase --abort` 取消rebase
+
+- `git reset --hard ORIG_HEAD` 可以恢复到rebase以前的状态
+
+- 最后可恢复第一步暂存的工作 `git stash pop`
+
+参考链接：
+
+> https://backlog.com/git-tutorial/tw/stepup/stepup7_6.html
+> https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E9%87%8D%E5%86%99%E5%8E%86%E5%8F%B2
+
+
+# 移除子模块的版本控制
+
+- 将独立的驱动git项目移到主内核git项目里之后，遇到了需要移除子模块的版本控制问题
+
+- 首先手动删除了驱动代码里的 `.git\*` 文件，该步骤不确定是否有必要
+
+- 之后执行
+
+```
+$ git rm --cached /path/to/files
+```
+
+- 此时驱动代码已不再作为子模块进行单独的版本控制，而是作为新增文件加入到主项目里
+
+- 参考链接：https://www.cnblogs.com/Akkuman/p/10911779.html
+
 # clone 并重命名
 
 ```
